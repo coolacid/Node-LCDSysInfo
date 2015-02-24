@@ -1,7 +1,6 @@
-var usb = require('usb')
+var usb = require('usb');
+var sleep = require('sleep');
 var dev
-
-// A lot of this is modified from https://github.com/dangardner/pylcdsysinfo/blob/master/pylcdsysinfo.py
 
 pub_TextColours = {
     GREEN       : 1,
@@ -53,6 +52,9 @@ pub_TextLines = {
     ALL         : 0x3f
 }
 
+var clear_line_wait_ms = 1000
+
+
 function pub_init() {
     dev = usb.findByIds(0x16c0, 0x05dc)
     if (dev == undefined) {
@@ -66,6 +68,10 @@ function pub_debug() {
     console.log(dev)
 }
 
+function pub_text_bk_colour(colour) {
+    dev.controlTransfer(0x40, 30, colour, 0, new Buffer(""));
+}
+
 function pub_text_on_line(line, text_string, colour) {
     text_length = text_string.length;
     dev.controlTransfer(0x40, 24, text_length, (line - 1) * 256 + colour, new Buffer(text_string + String.fromCharCode(0)))
@@ -73,7 +79,10 @@ function pub_text_on_line(line, text_string, colour) {
 
 function pub_clear_lines(lines, colour) {
     dev.controlTransfer(0x40, 26, lines, colour, new Buffer(""))
+    sleep.usleep(clear_line_wait_ms * 1000);
 }
+
+
 
 module.exports = {
     init: function init() {
@@ -84,6 +93,9 @@ module.exports = {
     },
     text_on_line: function text_on_line(line, text, colour) {
         pub_text_on_line(line, text, colour);
+    },
+    text_bk_colour: function text_bk_colour(colour) {
+        pub_text_bk_colour(colour);
     },
     clear_lines: function clear_lines(lines, colour) {
         pub_clear_lines(lines, colour);

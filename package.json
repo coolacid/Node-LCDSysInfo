@@ -2,6 +2,7 @@
   "name": "Node-LCDSysInfo",
   "version": "0.0.1",
   "dependencies": {
-    "usb": "^1.0.4"
+    "usb": "^1.0.4",
+    "sleep": "2.0.0"
   }
 }
