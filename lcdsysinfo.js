@@ -82,6 +82,10 @@ function pub_clear_lines(lines, colour) {
     sleep.usleep(clear_line_wait_ms * 1000);
 }
 
+function pub_set_brightness(value) {
+    dev.controlTransfer(0x40, 13, value, value, new Buffer(""))
+}
+
 
 
 module.exports = {
@@ -99,6 +103,9 @@ module.exports = {
     },
     clear_lines: function clear_lines(lines, colour) {
         pub_clear_lines(lines, colour);
+    },
+    set_brightness: function set_brightness(value) {
+        pub_set_brightness(value)
     },
     TextColours: pub_TextColours, BackColours: pub_BackColours, TextLines: pub_TextLines
 };
