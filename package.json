@@ -1,0 +1,7 @@
+{
+  "name": "Node-LCDSysInfo",
+  "version": "0.0.1",
+  "dependencies": {
+    "usb": "^1.0.4"
+  }
+}
